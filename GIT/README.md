@@ -1,4 +1,5 @@
 # Git Cheat Sheet
+![Git Cheat Sheet](./git-cli.jpg)
 
 ## Создание репозитория
 Создать новый локальный репозиторий:
@@ -129,5 +130,5 @@ $ git [имя команды] --help
 ```
 
 ---
-![Git Cheat Sheet](./git-cli.jpg)
+
 
