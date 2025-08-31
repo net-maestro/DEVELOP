@@ -389,21 +389,6 @@ import Footer from '@/components/Footer.vue';
   <Footer />
 </template>
 ```
-
----
-
-## ✅ Как сохранить на GitHub
-
-1. Создай репозиторий: `github.com/username/net-provider-site`
-2. Инициализируй локально:
-   ```bash
-   git init
-   git add .
-   git commit -m "feat: initial commit with modern Vuetify 3 design"
-   git remote add origin https://github.com/username/net-provider-site.git
-   git push -u origin main
-   ```
-
 ---
 
 ## ✅ Что дальше?
