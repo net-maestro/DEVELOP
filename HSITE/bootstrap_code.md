@@ -1,515 +1,591 @@
 
+Требования:  
+✅ Vue 3 + Vite  
+✅ Bootstrap 5 (установлен через npm)  
+✅ Шрифт Inter  
+✅ Украинский язык  
+✅ Адаптивность + горизонтальная прокрутка тарифов на мобильных  
+✅ Калькулятор скорости + динамический IPTV  
+✅ Минимализм и современный дизайн (как у simnet.ua)  
+✅ Готов к выкладке на GitHub
 
 ---
 
-### ✅ Требования реализованы:
-- 🇺🇦 Украинский язык  
-- 🎨 Минимализм и современный дизайн (как у simnet.ua)  
-- 🖋️ Шрифт **Inter**  
-- 📱 Адаптивность: **горизонтальная прокрутка тарифов на мобильных**  
-- 🧮 Калькулятор скорости + **выбор IPTV с динамической ценой**  
-- 💣 Убран весь легаси-код  
-- 🚀 Готов к выкладке на GitHub  
-- 🧱 Используется **только HTML + CSS + JS + Bootstrap 5**  
-
----
-
-## 📁 Структура проекта (чистый Bootstrap)
+## 📁 Структура проекта
 
 ```
-nethub-bootstrap/
+nethub/
+├── public/
+│   └── index.html
 ├── src/
-│   ├── components/
-│   │   ├── navbar.html
-│   │   ├── footer.html
-│   │   ├── tariff-card.html
-│   │   └── contact-form.html
-│   ├── views/
-│   │   ├── home.html
-│   │   └── about.html
 │   ├── assets/
 │   │   └── logo.svg
+│   ├── components/
+│   │   ├── Navbar.vue
+│   │   ├── Footer.vue
+│   │   ├── TariffCard.vue
+│   │   └── ContactForm.vue
+│   ├── views/
+│   │   ├── HomeView.vue
+│   │   └── AboutView.vue
 │   ├── styles/
-│   │   └── main.css
-│   └── index.html
-└── public/
-    └── index.html
+│   │   └── main.scss
+│   ├── router/
+│   │   └── index.js
+│   ├── App.vue
+│   └── main.js
+├── package.json
+├── vite.config.js
+└── README.md
 ```
-
-> 💡 Примечание: `src/` используется для удобства организации кода, как в фронтенд-проектах. В финальной сборке можно скопировать всё в корень.
 
 ---
 
-## ✅ 1. `public/index.html` (финальная точка входа)
+## ✅ 1. `package.json`
+
+```json
+{
+  "name": "nethub",
+  "version": "1.0.0",
+  "description": "Швидкий інтернет провайдер — NetHUB",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "deploy": "vite build && gh-pages -d dist"
+  },
+  "dependencies": {
+    "bootstrap": "^5.3.2",
+    "bootstrap-icons": "^1.11.3",
+    "vue": "^3.4.0",
+    "vue-router": "^4.3.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.0.0",
+    "vite": "^5.0.0",
+    "sass": "^1.70.0",
+    "gh-pages": "^6.1.1"
+  }
+}
+```
+
+---
+
+## ✅ 2. `vite.config.js`
+
+```js
+import { defineConfig } from 'vite'
+import vue from '@vitejs/plugin-vue'
+
+export default defineConfig({
+  plugins: [vue()],
+  css: {
+    preprocessorOptions: {
+      scss: {
+        api: 'modern-compiler' // или 'legacy', если ошибка
+      }
+    }
+  },
+  build: {
+    outDir: 'dist'
+  }
+})
+```
+
+---
+
+## ✅ 3. `public/index.html`
 
 ```html
 <!DOCTYPE html>
 <html lang="uk">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="../src/styles/main.css" />
-  <title>NetHUB — Швидкий інтернет</title>
-</head>
-<body>
-
-  <!-- Вставляем Navbar -->
-  <div w3-include-html="../src/components/navbar.html"></div>
-
-  <!-- Основной контент -->
-  <div w3-include-html="../src/views/home.html"></div>
-
-  <!-- Вставляем Footer -->
-  <div w3-include-html="../src/components/footer.html"></div>
-
-  <!-- Подключаем JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="../src/js/calculator.js"></script>
-  <script src="../src/js/include-html.js"></script>
-
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="icon" href="/src/assets/logo.svg" type="image/svg+xml">
+    <title>NetHUB — Швидкий інтернет</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
 </html>
 ```
 
-> 🔁 Мы используем `w3-include-html` для имитации компонентов. Альтернатива — собрать через простой `concat` или использовать статический генератор.
-
 ---
 
-## ✅ 2. `src/components/navbar.html`
+## ✅ 4. `src/main.js`
 
-```html
-<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
-  <div class="container">
-    <a class="navbar-brand d-flex align-items-center" href="../public/index.html">
-      <img src="../src/assets/logo.svg" alt="Logo" width="40" height="40" class="me-2">
-      <span class="fw-bold fs-5">NetHUB</span>
-    </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <div class="ms-auto">
-        <a class="nav-link" href="#home">Головна</a>
-        <a class="nav-link" href="#tariffs">Тарифи</a>
-        <a class="nav-link" href="#contact">Контакти</a>
-      </div>
-    </div>
-  </div>
-</nav>
+```js
+import { createApp } from 'vue'
+import App from './App.vue'
+
+// === CSS ===
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap-icons/font/bootstrap-icons.css'
+import './styles/main.scss'
+
+// === JS ===
+import 'bootstrap' // активирует тултипы, модалки и т.д.
+
+// === Router ===
+import router from './router'
+
+createApp(App).use(router).mount('#app')
 ```
 
 ---
 
-## ✅ 3. `src/components/footer.html`
+## ✅ 5. `src/styles/main.scss`
 
-```html
-<footer class="bg-light py-6 mt-12">
-  <div class="container text-center text-secondary small">
-    &copy; 2025 NetHUB — Швидкий інтернет по Україні
-  </div>
-</footer>
-```
-
----
-
-## ✅ 4. `src/components/tariff-card.html`
-
-> Это **шаблон**, используется в JS. Нельзя вставить напрямую как HTML-файл, но используется как шаблон карточки.
-
-```html
-<!-- Этот файл — шаблон. Используется в calculator.js -->
-<div class="tariff-card">
-  <h3 class="tariff-name"></h3>
-  <p class="speed"><strong></strong> <small>Мбіт/с</small></p>
-  <p class="price">від <strong></strong> ₴/міс</p>
-  <hr>
-  <ul class="features"></ul>
-  <button class="btn btn-primary w-100"></button>
-</div>
-```
-
----
-
-## ✅ 5. `src/components/contact-form.html`
-
-```html
-<form class="mx-auto" style="max-width: 500px;" id="contactForm">
-  <div class="mb-3">
-    <input type="text" class="form-control" placeholder="Ім’я" required id="name">
-  </div>
-  <div class="mb-3">
-    <input type="tel" class="form-control" placeholder="Телефон" required id="phone">
-  </div>
-  <div class="mb-3">
-    <textarea class="form-control" rows="3" placeholder="Повідомлення" id="message"></textarea>
-  </div>
-  <button type="submit" class="btn btn-primary w-100" id="submitBtn">Надіслати</button>
-  <p id="successMsg" class="text-success mt-3 d-none">Дякуємо! Ми зв’яжемося з вами найближчим часом.</p>
-</form>
-```
-
----
-
-## ✅ 6. `src/views/home.html`
-
-```html
-<main id="home">
-  <div class="container py-10">
-
-    <!-- Hero -->
-    <div class="text-center mb-12 px-4">
-      <h1 class="display-5 display-md-4 fw-bold mb-4">
-        Швидкий і надійний інтернет для дому та офісу
-      </h1>
-      <p class="text-muted">Підключіться за 24 години. Без комісій та прихованих платежів.</p>
-    </div>
-
-    <!-- Калькулятор -->
-    <section class="bg-light p-6 rounded-4 mb-12 mx-auto" style="max-width: 800px;" id="tariffs">
-      <h2 class="h6 fw-bold mb-4 text-center">Підберіть тариф під себе</h2>
-
-      <p class="text-center mb-2"><strong id="speedValue">100</strong> Мбіт/с</p>
-      <input type="range" class="form-range px-4" id="speedSlider" min="10" max="1000" step="10" value="100">
-
-      <div class="d-flex justify-content-between text-secondary small mt-2 px-4">
-        <span>10 Мбіт/с</span>
-        <span>1000 Мбіт/с</span>
-      </div>
-
-      <div class="mt-6 text-center">
-        <div class="form-check form-switch d-inline-block">
-          <input class="form-check-input" type="checkbox" id="iptvSwitch">
-          <label class="form-check-label" for="iptvSwitch">Підключити IPTV (+50 ₴/міс)</label>
-        </div>
-      </div>
-    </section>
-
-    <!-- Тарифи: Desktop -->
-    <section class="d-none d-md-block text-center">
-      <div class="row g-4" id="tariffGridDesktop"></div>
-    </section>
-
-    <!-- Тарифы: Mobile (горизонтальная прокрутка) -->
-    <section class="d-md-none overflow-auto pb-3" id="mobileTariffsContainer">
-      <div class="d-flex gap-3 p-2" id="mobileTariffs"></div>
-    </section>
-
-    <!-- Контакты -->
-    <section id="contact" class="text-center mt-16 px-4">
-      <h2 class="h5 fw-bold mb-6">Потрібна консультація?</h2>
-      <div w3-include-html="../src/components/contact-form.html"></div>
-    </section>
-
-  </div>
-</main>
-```
-
----
-
-## ✅ 7. `src/views/about.html`
-
-```html
-<div class="container py-12">
-  <h1 class="display-6 fw-bold text-center mb-6">Про нас</h1>
-  <p class="text-muted text-center px-4">
-    NetHUB — це сучасний інтернет-провайдер, який пропонує високу швидкість, стабільність та чесні тарифи без прихованих платежів.
-  </p>
-</div>
-```
-
----
-
-## ✅ 8. `src/styles/main.css`
-
-```css
+```scss
+// Глобальные стили
 body {
   font-family: 'Inter', sans-serif;
 }
 
-.py-10 {
-  padding-top: 4rem;
-  padding-bottom: 4rem;
-}
+// Отступы
+.py-10 { padding: 4rem 0; }
+.mb-12 { margin-bottom: 3rem; }
+.mt-16 { margin-top: 4rem; }
 
-.px-4 {
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
-}
+// Цвета
+.bg-primary { background-color: #2A5DFF !important; }
+.text-primary { color: #2A5DFF !important; }
+.bg-secondary { background-color: #F5F7FA !important; }
 
-.mb-12 {
-  margin-bottom: 3rem;
-}
-
-.mt-16 {
-  margin-top: 4rem;
-}
-
-.bg-light {
-  background-color: #F5F7FA !important;
-}
-
-.p-6 {
-  padding: 2rem;
-}
-
-.rounded-4 {
-  border-radius: 1rem;
-}
-
+// Карточка тарифу
 .tariff-card {
-  min-width: 300px;
-  max-width: 320px;
   border: 1px solid #e0e0e0;
   border-radius: 12px;
   padding: 1.5rem;
   background: white;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  &.popular {
+    border: 2px solid #2A5DFF;
+    position: relative;
+
+    &::before {
+      content: "Популярно";
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #2A5DFF;
+      color: white;
+      font-size: 0.75rem;
+      font-weight: 500;
+      padding: 4px 12px;
+      border-radius: 20px;
+    }
+  }
+
+  h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .speed {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2A5DFF;
+  }
+
+  .price {
+    color: #666;
+    font-size: 1rem;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 1.5rem;
+
+    li {
+      display: flex;
+      align-items: center;
+      font-size: 0.875rem;
+      margin-bottom: 0.5rem;
+      color: #333;
+
+      &::before {
+        content: "✓";
+        color: #2A5DFF;
+        font-weight: bold;
+        margin-right: 8px;
+      }
+    }
+  }
+
+  button {
+    border-radius: 50px;
+    font-weight: 500;
+    padding: 10px 0;
+  }
 }
 
-.tariff-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-}
-
-.tariff-card.popular {
-  border: 2px solid #2A5DFF;
-  position: relative;
-}
-
-.tariff-card.popular::before {
-  content: "Популярно";
-  position: absolute;
-  top: -12px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #2A5DFF;
-  color: white;
-  font-size: 0.75rem;
-  padding: 4px 12px;
-  border-radius: 20px;
-}
-
-.tariff-card h3 {
-  font-size: 1.125rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-}
-
-.tariff-card .speed {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #2A5DFF;
-  margin: 0.25rem 0;
-}
-
-.tariff-card .price {
-  font-size: 1rem;
-  color: #666;
-  margin-bottom: 1rem;
-}
-
-.tariff-card ul {
-  list-style: none;
-  padding: 0;
-  margin-bottom: 1.5rem;
-}
-
-.tariff-card ul li {
-  display: flex;
-  align-items: center;
-  font-size: 0.875rem;
-  margin-bottom: 0.5rem;
-  color: #333;
-}
-
-.tariff-card ul li::before {
-  content: "✓";
-  color: #2A5DFF;
-  font-weight: bold;
-  margin-right: 8px;
-}
-
-.tariff-card button {
-  padding: 12px;
-  font-weight: 500;
-  border-radius: 50px;
-}
-
-input[type="range"] {
+// Кастомизация слайдера
+.form-range {
   accent-color: #2A5DFF;
+  width: 100%;
 }
 ```
 
 ---
 
-## ✅ 9. `src/js/calculator.js`
+## ✅ 6. `src/router/index.js`
 
-```javascript
-// Тарифи
+```js
+import { createRouter, createWebHistory } from 'vue-router'
+import HomeView from '../views/HomeView.vue'
+import AboutView from '../views/AboutView.vue'
+
+const routes = [
+  { path: '/', component: HomeView },
+  { path: '/about', component: AboutView }
+]
+
+export const router = createRouter({
+  history: createWebHistory(),
+  routes,
+  scrollBehavior() {
+    return { top: 0 }
+  }
+})
+```
+
+---
+
+## ✅ 7. `src/components/Navbar.vue`
+
+```vue
+<template>
+  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+    <div class="container">
+      <router-link class="navbar-brand d-flex align-items-center" to="/">
+        <img src="@/assets/logo.svg" alt="Logo" width="40" height="40" class="me-2">
+        <span class="fw-bold fs-5">NetHUB</span>
+      </router-link>
+
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNav"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <div class="ms-auto">
+          <router-link class="nav-link" to="/">Головна</router-link>
+          <router-link class="nav-link" to="/#tariffs">Тарифи</router-link>
+          <router-link class="nav-link" to="/#contact">Контакти</router-link>
+        </div>
+      </div>
+    </div>
+  </nav>
+</template>
+```
+
+---
+
+## ✅ 8. `src/components/Footer.vue`
+
+```vue
+<template>
+  <footer class="bg-secondary py-6 mt-12">
+    <div class="container text-center text-secondary small">
+      &copy; 2025 NetHUB — Швидкий інтернет по Україні
+    </div>
+  </footer>
+</template>
+```
+
+---
+
+## ✅ 9. `src/components/TariffCard.vue`
+
+```vue
+<template>
+  <div class="tariff-card" :class="{ popular: tariff.popular }">
+    <h3 class="mb-2">{{ tariff.name }}</h3>
+    <p class="speed mb-1">
+      {{ tariff.speed }} <small>Мбіт/с</small>
+    </p>
+    <p class="price mb-4">від {{ tariff.price }} ₴/міс</p>
+
+    <hr>
+
+    <ul class="mb-4 px-2 text-start">
+      <li v-for="(feature, i) in tariff.features" :key="i" class="mb-1">
+        {{ feature }}
+      </li>
+    </ul>
+
+    <button class="btn btn-primary w-100">
+      {{ tariff.popular ? 'Найкращий вибір' : 'Підключити' }}
+    </button>
+  </div>
+</template>
+
+<script setup>
+defineProps({
+  tariff: { type: Object, required: true }
+})
+</script>
+```
+
+---
+
+## ✅ 10. `src/components/ContactForm.vue`
+
+```vue
+<template>
+  <form @submit.prevent="submit" class="mx-auto" style="max-width: 500px;">
+    <div class="mb-3">
+      <input v-model="name" type="text" class="form-control" placeholder="Ім’я" required>
+    </div>
+    <div class="mb-3">
+      <input v-model="phone" type="tel" class="form-control" placeholder="Телефон" required>
+    </div>
+    <div class="mb-3">
+      <textarea v-model="message" class="form-control" rows="3" placeholder="Повідомлення"></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary w-100" :disabled="loading">
+      {{ loading ? 'Надсилається...' : 'Надіслати' }}
+    </button>
+    <p v-if="success" class="text-success mt-3 mb-0">
+      Дякуємо! Ми зв’яжемося з вами найближчим часом.
+    </p>
+  </form>
+</template>
+
+<script setup>
+import { ref } from 'vue'
+
+const name = ref('')
+const phone = ref('')
+const message = ref('')
+const loading = ref(false)
+const success = ref(false)
+
+const submit = async () => {
+  if (loading.value) return
+  loading.value = true
+  await new Promise(r => setTimeout(r, 1500))
+  loading.value = false
+  success.value = true
+  setTimeout(() => success.value = false, 5000)
+  name.value = phone.value = message.value = ''
+}
+</script>
+```
+
+---
+
+## ✅ 11. `src/views/HomeView.vue`
+
+```vue
+<template>
+  <div id="home">
+    <div class="container py-10">
+
+      <!-- Hero -->
+      <div class="text-center mb-12 px-4">
+        <h1 class="display-5 fw-bold mb-4">
+          Швидкий і надійний інтернет для дому та офісу
+        </h1>
+        <p class="text-muted">Підключіться за 24 години. Без комісій та прихованих платежів.</p>
+      </div>
+
+      <!-- Калькулятор -->
+      <section class="bg-secondary p-6 rounded-4 mb-12 mx-auto" style="max-width: 800px;" id="tariffs">
+        <h2 class="h6 fw-bold mb-4 text-center">Підберіть тариф під себе</h2>
+
+        <p class="text-center mb-2"><strong>{{ speed }} Мбіт/с</strong></p>
+        <input
+          v-model.number="speed"
+          type="range"
+          class="form-range px-4"
+          min="10"
+          max="1000"
+          step="10"
+        >
+
+        <div class="d-flex justify-content-between text-secondary small mt-2 px-4">
+          <span>10 Мбіт/с</span>
+          <span>1000 Мбіт/с</span>
+        </div>
+
+        <div class="mt-6 text-center">
+          <div class="form-check form-switch d-inline-block">
+            <input
+              v-model="iptvEnabled"
+              class="form-check-input"
+              type="checkbox"
+              id="iptvSwitch"
+            >
+            <label class="form-check-label" for="iptvSwitch">
+              Підключити IPTV (+50 ₴/міс)
+            </label>
+          </div>
+        </div>
+      </section>
+
+      <!-- Тарифы -->
+      <div class="mb-12">
+        <!-- Desktop -->
+        <div class="row g-4 justify-content-center d-none d-md-flex">
+          <div
+            v-for="tariff in filteredTariffs"
+            :key="tariff.id"
+            class="col-12 col-sm-6 col-md-4 col-lg-3"
+          >
+            <TariffCard :tariff="tariff" />
+          </div>
+        </div>
+
+        <!-- Mobile (горизонтальная прокрутка) -->
+        <div class="d-md-none overflow-auto pb-3">
+          <div class="d-flex gap-3 p-2">
+            <div
+              v-for="tariff in filteredTariffs"
+              :key="tariff.id"
+              style="min-width: 300px; max-width: 320px;"
+            >
+              <TariffCard :tariff="tariff" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Контакты -->
+      <div id="contact" class="text-center mt-16 px-4">
+        <h2 class="h5 fw-bold mb-6">Потрібна консультація?</h2>
+        <ContactForm />
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, computed } from 'vue'
+import TariffCard from '@/components/TariffCard.vue'
+import ContactForm from '@/components/ContactForm.vue'
+
+const speed = ref(100)
+const iptvEnabled = ref(false)
+
 const baseTariffs = [
   { id: 1, name: 'Базовий', speed: 30, basePrice: 150, features: ['Wi-Fi роутер', 'Техпідтримка'], popular: false },
   { id: 2, name: 'Стандарт', speed: 100, basePrice: 250, features: ['Wi-Fi 6', 'Пріоритет у підтримці'], popular: true },
   { id: 3, name: 'Максимум', speed: 500, basePrice: 400, features: ['Оптоволокно', 'Підтримка 24/7', 'Безліміт'], popular: false },
-  { id: 4, name: 'Гігабіт', speed: 1000, basePrice: 600, features: ['Гігабіт', 'VIP-обслуговування', 'Резервний канал'], popular: false }
-];
+  { id: 4, name: 'Гігабіт', speed: 1000, basePrice: 600, features: ['Гігабіт', 'VIP-обслуговування', 'Резервний канал'], popular: false },
+]
 
-// DOM
-const speedSlider = document.getElementById('speedSlider');
-const speedValue = document.getElementById('speedValue');
-const iptvSwitch = document.getElementById('iptvSwitch');
-const tariffGridDesktop = document.getElementById('tariffGridDesktop');
-const mobileTariffs = document.getElementById('mobileTariffs');
-
-// Обновление тарифів
-function updateTariffs() {
-  const speed = parseInt(speedSlider.value);
-  const iptvEnabled = iptvSwitch.checked;
-  const iptvCost = iptvEnabled ? 50 : 0;
-
-  const filtered = baseTariffs
-    .filter(t => t.speed >= speed)
+const filteredTariffs = computed(() => {
+  const iptvCost = iptvEnabled.value ? 50 : 0
+  return baseTariffs
+    .filter(t => t.speed >= speed.value)
     .map(t => ({
       ...t,
       price: t.basePrice + iptvCost,
       features: [
         ...t.features,
-        iptvEnabled ? 'IPTV (300+ каналів)' : null
-      ].filter(Boolean)
-    }));
-
-  // Очистка
-  if (tariffGridDesktop) tariffGridDesktop.innerHTML = '';
-  if (mobileTariffs) mobileTariffs.innerHTML = '';
-
-  // Генерация карточек
-  filtered.forEach(tariff => {
-    const card = createTariffCard(tariff);
-    if (tariffGridDesktop) {
-      const col = document.createElement('div');
-      col.className = 'col';
-      col.appendChild(card);
-      tariffGridDesktop.appendChild(col);
-    }
-
-    if (mobileTariffs) {
-      const wrapper = document.createElement('div');
-      wrapper.className = 'flex-shrink-0';
-      wrapper.style.width = '300px';
-      wrapper.appendChild(card);
-      mobileTariffs.appendChild(wrapper);
-    }
-  });
-}
-
-// Создание карточки
-function createTariffCard(tariff) {
-  const card = document.createElement('div');
-  card.className = `tariff-card ${tariff.popular ? 'popular' : ''}`;
-
-  const featuresHTML = tariff.features.map(f => `<li>${f}</li>`).join('');
-
-  card.innerHTML = `
-    <h3>${tariff.name}</h3>
-    <p class="speed">${tariff.speed}</p>
-    <p class="price">${tariff.price}</p>
-    <hr>
-    <ul class="features">${featuresHTML}</ul>
-    <button class="btn btn-primary">
-      ${tariff.popular ? 'Найкращий вибір' : 'Підключити'}
-    </button>
-  `;
-
-  return card;
-}
-
-// Скорость
-speedSlider?.addEventListener('input', () => {
-  speedValue.textContent = speedSlider.value;
-  updateTariffs();
-});
-
-// IPTV
-iptvSwitch?.addEventListener('change', updateTariffs);
-
-// Форма
-const contactForm = document.getElementById('contactForm');
-const submitBtn = document.getElementById('submitBtn');
-const successMsg = document.getElementById('successMsg');
-
-contactForm?.addEventListener('submit', function (e) {
-  e.preventDefault();
-  submitBtn.disabled = true;
-  submitBtn.textContent = 'Надсилається...';
-
-  setTimeout(() => {
-    submitBtn.disabled = false;
-    submitBtn.textContent = 'Надіслано';
-    successMsg.classList.remove('d-none');
-
-    setTimeout(() => {
-      contactForm.reset();
-      successMsg.classList.add('d-none');
-      submitBtn.textContent = 'Надіслати';
-    }, 3000);
-  }, 1500);
-});
-
-// Первый рендер
-if (speedSlider) updateTariffs();
+        ...(iptvEnabled.value ? ['IPTV (300+ каналів)'] : [])
+      ]
+    }))
+})
+</script>
 ```
 
 ---
 
-## ✅ 10. `src/js/include-html.js` (для компонентов)
+## ✅ 12. `src/views/AboutView.vue`
 
-```javascript
-// Простой аналог <include> для HTML-фрагментов
-document.addEventListener("DOMContentLoaded", function () {
-  const includeHTML = (el, url) => {
-    fetch(url)
-      .then(r => r.text())
-      .then(data => {
-        el.outerHTML = data;
-        // После вставки — перезапускаем калькулятор
-        if (url.includes('home.html')) {
-          setTimeout(() => {
-            if (typeof updateTariffs === 'function') updateTariffs();
-          }, 100);
-        }
-      });
-  };
-
-  const elements = document.querySelectorAll("[w3-include-html]");
-  elements.forEach(el => {
-    includeHTML(el, el.getAttribute("w3-include-html"));
-  });
-});
+```vue
+<template>
+  <div class="container py-12">
+    <h1 class="display-6 fw-bold text-center mb-6">Про нас</h1>
+    <p class="text-muted text-center px-4">
+      NetHUB — це сучасний інтернет-провайдер, який пропонує високу швидкість, стабільність та чесні тарифи без прихованих платежів.
+    </p>
+  </div>
+</template>
 ```
 
 ---
 
-## ✅ Что дальше?
+## ✅ 13. `src/App.vue`
 
-1. **Собрать проект**:
-   - Скопируйте всё из `src/` в `public/` или используйте простой скрипт:
-     ```bash
-     cp src/views/home.html public/index.html
-     # и так далее, или использовать npm run build
-     ```
+```vue
+<script setup>
+import { RouterView } from 'vue-router'
+import Navbar from '@/components/Navbar.vue'
+import Footer from '@/components/Footer.vue'
+</script>
 
-2. **Запустить локально**:
-   ```bash
-   npx serve public
-   ```
+<template>
+  <Navbar />
+  <RouterView />
+  <Footer />
+</template>
 
-3. **Залить на GitHub Pages**:
-   - Положите всё в репозиторий
-   - Settings → Pages → ветка `main`, папка `/public`
+<style scoped></style>
+```
 
-4. **Добавить PWA / Telegram / Анимации** — как в предыдущем ответе.
+---
+
+## ✅ 14. `README.md` (опционально)
+
+```md
+# NetHUB — Швидкий інтернет
+
+Сучасний сайт інтернет-провайдера на Vue 3 + Vite + Bootstrap 5.
+
+## 🚀 Запуск
+
+```bash
+npm install
+npm run dev
+```
+
+## 📦 Деплой на GitHub Pages
+
+```bash
+npm run deploy
+```
+
+> Перед этим укажите `homepage` в `package.json`.
+```
+
+---
+
+## ✅ Как запустить
+
+```bash
+# 1. Установить зависимости
+npm install
+
+# 2. Запустить локально
+npm run dev
+
+# 3. Собрать
+npm run build
+
+# 4. Задеплоить на GitHub Pages
+npm run deploy
+```
 
 ---
