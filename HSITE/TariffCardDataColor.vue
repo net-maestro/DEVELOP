@@ -44,6 +44,7 @@
               'tariff-card card-hover pa-6 card-animate',
               getTariffStyle(tariff).class
             ]"
+            :style="{ backgroundColor: getTariffStyle(tariff).cardBg }"
           >
             <!-- Акцентная полоса -->
             <div class="accent-bar" :class="getTariffStyle(tariff).accent"></div>
@@ -91,14 +92,14 @@
             </div>
 
             <!-- Внешний IP -->
-            <div class="option-section mb-1 py-2 px-3 rounded" style="background-color: #f9f9f9;">
+            <div class="option-section mb-1 py-2 px-3 rounded" :style="{ backgroundColor: getTariffStyle(tariff).optionBg }">
               <label class="switch-label">
                 <input
                   type="checkbox"
                   v-model="tariff.externalIpEnabled"
                   class="switch-input"
                 />
-                <span class="switch-slider"></span>
+                <span class="switch-slider" :style="{ backgroundColor: tariff.externalIpEnabled ? '#fed100' : '#ccc' }"></span>
                 {{ $t('prices.external-ip') }}
                 <span v-if="tariff.externalIpPrice > 0" class="price-additional">(+{{ tariff.externalIpPrice }} ₴)</span>
               </label>
@@ -106,14 +107,14 @@
 
             <!-- IPTV -->
             <template v-if="tariff.iptv">
-              <div class="option-section mb-1 py-2 px-3 rounded" style="background-color: #f9f9f9;">
+              <div class="option-section mb-1 py-2 px-3 rounded" :style="{ backgroundColor: getTariffStyle(tariff).optionBg }">
                 <label class="switch-label">
                   <input
                     type="checkbox"
                     v-model="iptvEnabled"
                     class="switch-input"
                   />
-                  <span class="switch-slider"></span>
+                  <span class="switch-slider" :style="{ backgroundColor: iptvEnabled ? '#fed100' : '#ccc' }"></span>
                   + IPTV
                   <img
                     src="@/assets/prices/logo_sweettv_light.svg"
@@ -131,10 +132,13 @@
                     class="iptv-option"
                     :class="{ 'selected': selectedIptvTariff?.id === iptvTariff.id }"
                     @click="selectIptvTariff(iptvTariff)"
+                    :style="{ borderColor: getTariffStyle(tariff).iconColor }"
                   >
                     <span>{{ iptvTariff.name }} — {{ iptvTariff.tv_count }} каналів</span>
                     <span class="iptv-price">+{{ iptvTariff.price }} ₴</span>
-                    <span class="iptv-chip">{{ iptvTariff.tv_count }} TV</span>
+                    <span class="iptv-chip" :style="{ backgroundColor: getTariffStyle(tariff).chipBg, color: getTariffStyle(tariff).iconColor }">
+                      {{ iptvTariff.tv_count }} TV
+                    </span>
                   </div>
                 </div>
               </div>
@@ -155,6 +159,11 @@
                     ]"
                     :disabled="tariff.connectionTypes.length === 1"
                     @click="selectedConnectionTypes[tariff.id] !== type && (selectedConnectionTypes[tariff.id] = type)"
+                    :style="{
+                      backgroundColor: selectedConnectionTypes[tariff.id] === type ? '#fed100' : 'white',
+                      color: selectedConnectionTypes[tariff.id] === type ? 'black' : 'inherit',
+                      borderColor: selectedConnectionTypes[tariff.id] === type ? '#fed100' : '#ccc'
+                    }"
                   >
                     {{ type }}
                   </button>
@@ -165,9 +174,11 @@
             <!-- Итоговая цена -->
             <div
               v-if="totalPrice(tariff) >= 0"
-              :class="['total-price-alert', getTariffStyle(tariff).alertColor]"
-              class="text-subtitle-1 font-weight-bold text-center py-2 rounded"
-              :style="{ borderLeftColor: getTariffStyle(tariff).iconColor }"
+              class="total-price-alert text-subtitle-1 font-weight-bold text-center py-2 rounded"
+              :style="{ 
+                backgroundColor: getTariffStyle(tariff).totalBg,
+                borderLeftColor: getTariffStyle(tariff).iconColor 
+              }"
             >
               {{ $t("prices.total") }}: {{ tariff.price + totalPrice(tariff) }} ₴/{{ $t("prices.month") }}
             </div>
@@ -177,7 +188,8 @@
               <RequestForm
                 :FormData="getFormData(tariff)"
                 :ButtonTitle="$t('prices.to-buy')"
-                :ButtonColor="getTariffStyle(tariff).iconColor"
+                :ButtonColor="getTariffStyle(tariff).buttonColor"
+                :ButtonTextColor="'#000000'"
                 :ButtonIcon="'mdi-cart-outline'"
               />
             </v-card-actions>
@@ -201,24 +213,41 @@ export default {
 
   data() {
     return {
-      // Стили по уровням тарифов — золотая палитра
+      // Стили по уровням тарифов — с фонами и цветами
       tariffStyles: {
         economy: {
           class: 'economy-tariff',
           accent: 'accent-economy',
-          iconColor: '#e6b800',
-          alertColor: 'amber-lighten-3'
+          iconColor: '#2e7d32', // тёмно-зелёный
+          cardBg: '#e8f5e9',
+          optionBg: '#f1f8e9',
+          chipBg: '#dcedc8',
+          totalBg: '#f1f8e9',
+          buttonColor: '#c8e6c9',
+          alertColor: 'green-lighten-3'
         },
         standard: {
           class: 'standard-tariff',
           accent: 'accent-standard',
-          iconColor: '#feb700',
-          alertColor: 'amber-lighten-2'
+          iconColor: '#1565c0', // тёмно-синий
+          cardBg: '#E3F2FD',
+          optionBg: '#e3f2fd',
+          chipBg: '#bbdefb',
+          totalBg: '#e3f2fd',
+          buttonColor: '#bbdefb',
+          alertColor: 'blue-lighten-3'
         },
         premium: {
           class: 'premium-tariff',
           accent: 'accent-premium',
-          iconColor: '#fed100',
+          iconColor: '#d32f2f', // или оставить золотой? но для иконки лучше контраст
+          // Но лучше использовать золотой для иконки в премиуме:
+          iconColor: '#b38800', // тёмно-золотой для контраста на светлом фоне
+          cardBg: '#fff8e1',
+          optionBg: '#ffecb3',
+          chipBg: '#ffe082',
+          totalBg: '#fff8e1',
+          buttonColor: '#fed100',
           alertColor: 'amber-lighten-1'
         }
       },
@@ -479,8 +508,7 @@ export default {
 
 .tariff-card {
   position: relative;
-  background: #ffffff;
-  border: 1px solid #f0f0f0;
+  border: 1px solid #e0e0e0;
   border-radius: 12px;
   padding: 16px;
   transition: all 0.3s ease;
@@ -505,13 +533,13 @@ export default {
   border-bottom-right-radius: 12px;
 }
 
-/* Обновлённые акцентные цвета — золотая палитра */
+/* Акцентные полосы */
 .accent-economy {
-  background: linear-gradient(to bottom, #fed100, #e6b800);
+  background: linear-gradient(to bottom, #4caf50, #2e7d32);
 }
 
 .accent-standard {
-  background: linear-gradient(to bottom, #feb700, #d99d00);
+  background: linear-gradient(to bottom, #2196f3, #1565c0);
 }
 
 .accent-premium {
@@ -526,7 +554,6 @@ export default {
 }
 
 .price-section {
-  background: #f8fbfa;
   border-radius: 10px;
   padding: 12px;
   margin-bottom: 16px;
@@ -569,7 +596,7 @@ export default {
 
 .divider {
   border: none;
-  border-top: 1px solid #eee;
+  border-top: 1px solid #ccc;
 }
 
 .battery-section {
@@ -605,7 +632,7 @@ export default {
 }
 
 .option-section:hover {
-  background: #f0f0f0;
+  opacity: 0.95;
 }
 
 .switch-label {
@@ -624,7 +651,6 @@ export default {
 .switch-slider {
   width: 36px;
   height: 18px;
-  background-color: #ccc;
   border-radius: 9px;
   position: relative;
   transition: 0.3s;
@@ -640,10 +666,6 @@ export default {
   top: 1px;
   left: 1px;
   transition: 0.3s;
-}
-
-.switch-input:checked + .switch-slider {
-  background-color: #fed100;
 }
 
 .switch-input:checked + .switch-slider::before {
@@ -677,15 +699,15 @@ export default {
   cursor: pointer;
   transition: background 0.2s;
   font-size: 0.875rem;
+  border: 1px solid transparent;
 }
 
 .iptv-option:hover {
-  background: #fff8e1;
+  opacity: 0.9;
 }
 
 .iptv-option.selected {
-  background: #fff8e1;
-  border: 1px solid #feb700;
+  border-width: 2px;
 }
 
 .iptv-price {
@@ -694,8 +716,6 @@ export default {
 }
 
 .iptv-chip {
-  background-color: #fff8e1;
-  color: #e6b800;
   font-size: 10px;
   padding: 2px 6px;
   border-radius: 10px;
@@ -703,24 +723,10 @@ export default {
 }
 
 .total-price-alert {
-  background-color: #f8f9fa;
   border-left: 4px solid transparent;
   margin-top: auto;
   margin-bottom: 12px;
   font-size: 1rem;
-}
-
-/* Обновлённые цвета для итоговой цены */
-.amber-lighten-3 {
-  border-left-color: #e6b800 !important;
-}
-
-.amber-lighten-2 {
-  border-left-color: #feb700 !important;
-}
-
-.amber-lighten-1 {
-  border-left-color: #fed100 !important;
 }
 
 /* Технология подключения */
@@ -758,12 +764,6 @@ export default {
   transition: all 0.2s;
   min-width: 60px;
   text-align: center;
-}
-
-.connection-btn.active {
-  background-color: #fed100;
-  color: black;
-  border-color: #fed100;
 }
 
 .connection-btn.disabled {
