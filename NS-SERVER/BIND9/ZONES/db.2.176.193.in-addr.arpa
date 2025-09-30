@@ -1,0 +1,13 @@
+$TTL 86400
+@   IN  SOA ns1.happylink.net.ua. noc.happylink.net.ua. (
+        2025093001 ; Serial
+        3600
+        1800
+        1209600
+        86400 )
+
+@   IN  NS  ns.happylink.net.ua.
+@   IN  NS  ns1.happylink.net.ua.
+
+1   IN PTR ns1.happylink.net.ua.
+
