@@ -1,0 +1,14 @@
+$TTL 86400
+@   IN  SOA ns1.happylink.com. admin.happylink.com. (
+        2025093001 ; Serial
+        3600
+        1800
+        1209600
+        86400 )
+
+@   IN  NS  ns.happylink.net.ua.
+@   IN  NS  ns1.happylink.net.ua.
+
+1   IN PTR ns.happylink.net.ua.
+10  IN PTR www.happylink.net.ua.
+20  IN PTR mail.happylink.net.ua.
