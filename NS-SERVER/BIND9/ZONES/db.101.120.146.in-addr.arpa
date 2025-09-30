@@ -1,5 +1,5 @@
 $TTL 86400
-@   IN  SOA ns1.happylink.com. admin.happylink.com. (
+@   IN  SOA ns.happylink.com. noc.happylink.com. (
         2025093001 ; Serial
         3600
         1800
