@@ -1,5 +1,4 @@
-version: "3.8"
-
+# version: '3.8'  # можно опустить при использовании Compose v2+
 services:
   bind9:
     image: internetsystemsconsortium/bind9:9.18
@@ -17,3 +16,6 @@ services:
 networks:
   dnsnet:
     driver: bridge
+    
+
+    
