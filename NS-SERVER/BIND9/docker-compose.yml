@@ -1,4 +1,4 @@
-# version: '3.8'  # можно опустить при использовании Compose v2+
+# docker-compose.yml
 services:
   bind9:
     image: openeuler/bind9:latest
