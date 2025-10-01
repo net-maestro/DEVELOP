@@ -1,3 +1,4 @@
+# db.happylink.net.ua
 $TTL 86400
 @   IN  SOA ns.happylink.net.ua. noc.happylink.net.ua. (
         2025093001 ; Serial
