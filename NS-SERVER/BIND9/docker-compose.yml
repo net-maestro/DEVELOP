@@ -1,7 +1,7 @@
 # version: '3.8'  # можно опустить при использовании Compose v2+
 services:
   bind9:
-    image: internetsystemsconsortium/bind9:9.18
+    image: openeuler/bind9:latest
     container_name: bind9
     restart: unless-stopped
     volumes:
