@@ -1,0 +1,17 @@
+; PTR для 146.120.101.0/24
+$TTL 3600
+@ IN SOA dns2.happylink.net.ua. admin.happylink.net.ua. (
+    2025040501
+    3600
+    900
+    604800
+    3600
+)
+
+@ IN NS dns2.happylink.net.ua.
+
+; Формат: <последний октет> IN PTR <полное имя хоста>.
+245  IN PTR www.happylink.net.ua.
+253  IN PTR mail.happylink.net.ua.
+252 IN PTR dns2.happylink.net.ua.
+; ... и так далее для нужных IP
