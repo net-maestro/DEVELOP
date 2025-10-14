@@ -1,3 +1,4 @@
+#generate-ptrs.sh
 #!/bin/bash
 
 # Подсети
