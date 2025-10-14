@@ -1,0 +1,17 @@
+; zones/happylink.net.ua.zone
+$TTL 3600
+@ IN SOA dns2.happylink.net.ua. admin.happylink.net.ua. (
+    2025040501 ; serial — меняй при обновлении
+    3600       ; refresh
+    900        ; retry
+    604800     ; expire
+    3600 )     ; minimum
+
+; NS-запись
+@       IN NS dns2.happylink.net.ua.
+
+; A-записи (примеры — добавь свои)
+dns2    IN A 146.120.101.252
+www     IN A 146.120.101.245
+mail    IN A 146.120.101.253
+; @     IN A 146.120.101.100  ; apex-запись (happylink.net.ua → IP)
