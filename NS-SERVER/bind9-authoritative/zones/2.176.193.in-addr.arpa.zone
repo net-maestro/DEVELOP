@@ -1,0 +1,15 @@
+; PTR для 193.176.2.0/24
+$TTL 3600
+@ IN SOA dns2.happylink.net.ua. admin.happylink.net.ua. (
+    2025040501
+    3600
+    900
+    604800
+    3600
+)
+
+@ IN NS dns2.happylink.net.ua.
+
+1   IN PTR server1.happylink.net.ua.
+2   IN PTR server2.happylink.net.ua.
+; ... добавь нужные записи
