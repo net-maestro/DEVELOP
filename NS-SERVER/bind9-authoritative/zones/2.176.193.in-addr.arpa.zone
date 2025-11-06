@@ -1,4 +1,6 @@
 ; PTR для 193.176.2.0/24
+; zones/2.176.193.in-addr.arpa.zone
+
 $TTL 3600
 @ IN SOA dns2.happylink.net.ua. admin.happylink.net.ua. (
     2025040501
