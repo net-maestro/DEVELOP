@@ -1,5 +1,5 @@
 #!/bin/bash
-### generate-ptrs.sh
+# generate-ptrs.sh
 DOMAIN="happylink.net.ua"
 mkdir -p zones
 
