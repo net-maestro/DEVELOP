@@ -19,10 +19,10 @@ ONU_DATA = [
 {"description":"51004","serial":"HWTC6AB3A73F","sp":"100","vlan_id":"1217"},
 {"description":"51005","serial":"ZTEGC6A52CD7","sp":"100","vlan_id":"1217"},
 {"description":"51010","serial":"HWTCA613E107","sp":"100","vlan_id":"1217"},
-{"description":"51012","serial":"HWTCAF7BF3ED","sp":"100","vlan_id":"1217"},
+{"description":"51012","serial":"HWTCAF7BF3ED","sp":"100","vlan_id":"1217"}, #vlan200
 {"description":"51020","serial":"ZTEGC19F0409","sp":"1000","vlan_id":"1217"},
 {"description":"51029","serial":"ZTEGC1BC1C3A","sp":"100","vlan_id":"1217"},
-{"description":"51033","serial":"HWTC1D2B947F","sp":"100","vlan_id":"1217"},
+{"description":"51033","serial":"HWTC1D2B947F","sp":"100","vlan_id":"1217"}, #vlan200
 {"description":"51034","serial":"HWTCAFDAC23F","sp":"100","vlan_id":"1217"},
 {"description":"51035","serial":"HWTCA613DAF9","sp":"1000","vlan_id":"1217"},
 {"description":"51036","serial":"ZTEGC173BE3B","sp":"100","vlan_id":"1217"},
