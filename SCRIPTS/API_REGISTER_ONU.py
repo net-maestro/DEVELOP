@@ -81,8 +81,7 @@ def register_onu(data, ont_number):
             "serial": data["serial"],
             "onu_model_gpon": "F601",
             "vlan_id": str(data["vlan_id"]),  # ← теперь из данных
-            "up_speed_profile": data["up"],
-            "down_speed_profile": data["down"]
+            "speed_profile": data["sp"]
         },
         "preview": PREVIEW,
         "macros": {"id": MACRO_ID}
