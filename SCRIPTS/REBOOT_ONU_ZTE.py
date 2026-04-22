@@ -32,6 +32,7 @@ for onu_id in ONU_RANGE:
                 'configure terminal',
                 f'pon-onu-mng {full_onu}',
                 'reboot',
+                'y',
                 'exit',
                 'exit'
             ]
