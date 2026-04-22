@@ -27,23 +27,27 @@ def mac_to_zxan(mac: str) -> str:
 
 def normalize_port(port: str) -> str:
     """
-    Приводит порт к формату:
-    gpon-onu_1/1/3:1
+    Приводит:
+    vport-1/1/4.8:1 → gpon-onu_1/1/4:8
     """
 
     if port.startswith("gpon-onu_"):
         return port
 
     if port.startswith("vport-"):
-        # vport-1/1/3.1:1 → gpon-onu_1/1/3:1
-        port = port.replace("vport-", "gpon-onu_")
+        # вытаскиваем часть после vport-
+        raw = port.replace("vport-", "")
 
-        # убираем .1 перед :
-        port = re.sub(r'\.(\d+):', ':', port)
+        # 1/1/4.8:1
+        match = re.match(r'(\d+/\d+/\d+)\.(\d+):\d+', raw)
+        if match:
+            pon = match.group(1)   # 1/1/4
+            onu = match.group(2)   # 8
 
-        return port
+            return f"gpon-onu_{pon}:{onu}"
 
-    return port  # fallback (на всякий случай)
+    return port  # fallback
+
 
 
 def parse_zxan_mac(output: str):
